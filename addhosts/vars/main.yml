@@ -1,0 +1,5 @@
+---
+#addhosts_list:
+  #- host: "127.0.0.1 me"
+  #  state: present
+

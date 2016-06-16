@@ -1,0 +1,15 @@
+---
+- name: Make a solr install directory.
+  file: state=directory path={{ solr_extractdir }} recurse=yes
+
+- name: Install the solr
+  unarchive: src=solr-{{ solr_version }}.zip dest={{ solr_extractdir }}
+
+- name: ln
+  file: state=link src={{ solr_extractdir }}/solr-{{ solr_version }} path={{ solr_installdir }}
+
+- name: Copy an init script
+  copy: src=solr dest=/etc/init.d/solr mode=0755
+
+- name: Add solr as a service
+  service: name=solr state=started enabled=yes

@@ -1,0 +1,39 @@
+- name: Install all packages
+  yum: name={{ item }}
+  with_items:
+    - httpd
+    - mod_ssl
+    - openssl-devel
+
+- name: Make module directory
+  file: state=directory path={{ httpd_conf_module_dir }} mode=0755 owner=root group=root
+
+#- name: Create a document root directory
+#  file: path={{ httpd_document_root }} state=directory owner={{ httpd_document_root_owner }} group=apache mode=2775
+#  ignore_errors: True
+
+- name: Copy httpd.conf
+  template: src=httpd.conf dest=/etc/httpd/conf/httpd.conf
+  notify:
+    - Restart httpd
+
+#- name: Copy the top page
+#  copy: src=index.php dest={{ httpd_document_root }} force=no
+
+- name: Set the apache log directory permission 755
+  file: path=/var/log/httpd state=directory mode=755
+
+- name: Enable SSL
+  include: ssl.yml 
+  when: httpd_ssl_enable == True
+
+- name: Include module directory
+  lineinfile: line="Include conf.module.d/*.conf" regexp="^#?\s*Include conf\.module\.d" dest=/etc/httpd/conf/httpd.conf
+              insertbefore="Include conf.d/\*\.conf"
+
+- name: Apache modules
+  include: modules.yml
+
+- name: Auto start htpd
+  service: name=httpd state=started enabled=yes
+

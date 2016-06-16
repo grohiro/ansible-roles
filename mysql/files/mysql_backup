@@ -1,0 +1,8 @@
+/home/{{user}}/backup/mysql/{{mysql_dbname}}.backup {
+  compress
+  daily
+  nomissingok
+  nocreate
+  rotate 15
+}
+

@@ -1,0 +1,33 @@
+---
+- name: sshd_config
+  lineinfile: dest=/etc/ssh/sshd_config
+              line="{{ item.line }}"
+              regexp="{{ item.regexp }}"
+              state=present
+              insertafter=EOF
+  with_items:
+  - regexp: '^#?\s*PasswordAuthentication'
+    line: "PasswordAuthentication no"
+  - regexp: '^#?\s*PermitRootLogin'
+    line: "PermitRootLogin no"
+  notify:
+    - Restart sshd
+
+- name: Add AllowUsers to sshd_config
+  lineinfile: dest=/etc/ssh/sshd_config
+              line="AllowUsers {{ secure_sshd_allow_users }}"
+              regexp="^#?\s*AllowUsers"
+              state=present
+              insertafter=EOF
+  notify:
+    - Restart sshd
+  when: secure_sshd_allow_users is defined
+
+- name: Remove AllowUsers from sshd_config
+  lineinfile: dest=/etc/ssh/sshd_config
+              regexp="^AllowUsers"
+              state=absent
+  notify:
+    - Restart sshd
+  when: secure_sshd_allow_users is not defined
+

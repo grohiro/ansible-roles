@@ -1,0 +1,16 @@
+---
+- name: php.ini - max_execution_time
+  lineinfile: dest=/etc/php.ini regexp="^#?\s*max_execution_time" line="max_execution_time = 0"
+
+- name: php.ini - max_file_uploads
+  lineinfile: dest=/etc/php.ini regexp="^#?\s*max_file_uploads" line="max_file_uploads = 50"
+
+- name: php.ini - max_input_vars
+  lineinfile: dest=/etc/php.ini regexp="^#?\s*max_input_vars" line="max_input_vars = 2000"
+
+- name: php.ini - post_max_size
+  lineinfile: dest=/etc/php.ini regexp="^#?\s*post_max_size" line="post_max_size = '20M'"
+
+- name: php.ini - upload_max_filesize
+  lineinfile: dest=/etc/php.ini regexp="^#?\s*upload_max_filesize" line="upload_max_filesize = '8M'"
+

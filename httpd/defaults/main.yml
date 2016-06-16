@@ -1,0 +1,12 @@
+---
+httpd_document_root: /var/www/html
+httpd_document_root_owner: apache
+httpd_listen: 80
+
+httpd_ssl_enable: False
+httpd_ssl_cert: /etc/httpd/conf/server.crt
+httpd_ssl_key:  /etc/httpd/conf/server.key
+httpd_ssl_inca: /etc/httpd/conf/inca.key
+
+httpd_module_webdav: False
+httpd_module_proxy: False

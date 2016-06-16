@@ -1,0 +1,7 @@
+---
+- name: Install OpenJDK {{ openjdk_version }}
+  yum: name=java-{{ openjdk_version }}-openjdk state=present
+
+- name: Install Devel
+  yum: name=java-{{ openjdk_version }}-openjdk-devel state=present
+  when: openjdk_install_devel == True

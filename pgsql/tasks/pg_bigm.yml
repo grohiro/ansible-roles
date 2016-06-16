@@ -1,0 +1,17 @@
+
+- name: pg_bigm.so
+  copy: src=pg_bigm/pg_bigm.so dest=/usr/pgsql-9.3/lib/pg_bgm.so
+
+- name: extensions
+  copy: src=pg_bigm/{{ item }} dest=/usr/pgsql-9.3/lib/
+  with_items:
+    - pg_bigm.control
+    - pg_bigm--1.0.sql
+
+- name: Add shared_preload_libraries
+  lineinfile: dest={{ pgsql_pgdata }}/postgresql.conf line="shared_preload_libraries = 'pg_bigm'"
+
+# Need for PostgreSQL 9.1
+#- name: Add custom_variable_classes
+#  lineinfile: dest={{ pgsql_pgdata }}/postgresql.conf line="custom_variable_classes = 'pg_bigm'"
+

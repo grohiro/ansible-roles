@@ -1,0 +1,16 @@
+---
+- name: Download binary
+  command: wget -O /tmp/maven.tar.gz "{{ maven_url }}" creates=/tmp/maven.tar.gz
+
+- name: Extract files
+  unarchive: src=/tmp/maven.tar.gz dest=/tmp/ copy=no
+
+- name: Copy binaries
+  command: rsync -a /tmp/{{ maven_url | basename | replace("-bin", "") | replace(".tar.gz", "") }}/ /usr/local/maven
+
+- name: Create symlink
+  file: state=link src=/tmp/{{ maven_url | basename | replace("-bin", "") | replace(".tar.gz", "") }}/bin/mvn dest=/usr/local/bin/mvn
+
+  
+
+

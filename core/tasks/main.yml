@@ -1,0 +1,54 @@
+---
+- name: Install yum repos
+  yum: name={{ item }}
+  with_items:
+    - http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+    - http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
+
+- name: Install some packages
+  yum: name={{ item }}
+  with_items:
+    - vim
+    - telnet
+    - screen
+    - lftp
+    - git
+    - mail
+    - unzip
+    - libselinux-python
+    - tzdata
+
+- name: sudoers env_keep
+  lineinfile: dest=/etc/sudoers
+              regexp="Defaults\s*env_keep"
+               line="Defaults env_keep +=  \"PATH SSH_AUTH_SOCK\""
+
+- name: Remove secure_path from /etc/sudoers
+  lineinfile: dest=/etc/sudoers
+              regexp="Defaults\s*secure_path"
+              state=absent
+
+- name: Remove requiretty from /etc/sudoers 
+  lineinfile: dest=/etc/sudoers
+              regexp="Defaults\s*requiretty"
+              state=absent
+
+- name: root PATH
+  lineinfile: dest=/root/.bash_profile
+              line='export PATH=/usr/local/sbin:/usr/local/bin:$PATH'
+
+- name: root .ssh
+  file: state=directory mode=0700 path=/root/.ssh
+
+- name: root .ssh/config
+  lineinfile: dest=/root/.ssh/config
+              line="StrictHostKeyChecking no"
+              create=yes
+              mode=0600
+
+- name: Copy timezone
+  file: src=/usr/share/zoneinfo/Asia/Tokyo dest=/etc/localtime force=true state=link
+
+- name: Change timezone
+  lineinfile: dest=/etc/sysconfig/clock regexp="^ZONE=" line="ZONE=\"Asia/Tokyo\""
+

@@ -1,0 +1,27 @@
+---
+- name: Install PHP
+  yum : name={{ item }}
+  with_items:
+    - php
+    - php-devel
+    - php-mbstring
+    - php-gd
+    - php-pdo
+    - php-mysql
+    - php-mcrypt
+    - php-pear
+    - php-pcre
+
+- name: php.ini 
+  include: php-ini.yml
+  notify:
+    - Restart httpd
+
+- name: Set the timezone
+  lineinfile:  dest=/etc/php.ini line="date.timezone = 'Asia/Tokyo'" regexp="^date.timezone = 'Asia/Tokyo'$"
+
+- name: Copy php-mbstring.ini
+  copy: src=php-mbstring.ini dest=/etc/php.d/mbstring.ini
+  notify:
+    - Restart httpd
+

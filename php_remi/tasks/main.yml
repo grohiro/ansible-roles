@@ -1,0 +1,35 @@
+---
+- name: Install PHP core
+  yum : name={{ item }} enablerepo=remi
+  with_items:
+    - php{{ php_remi_version }}-php
+    - php{{ php_remi_version }}-php-devel
+    - php{{ php_remi_version }}-php-mbstring
+    - php{{ php_remi_version }}-php-gd
+    - php{{ php_remi_version }}-php-pdo
+    - php{{ php_remi_version }}-php-mysql
+    - php{{ php_remi_version }}-php-mcrypt
+    - php{{ php_remi_version }}-php-pear
+    - php{{ php_remi_version }}-php-pcre
+
+- name: Install PHP core
+  yum : name={{ item }} enablerepo=remi
+  with_items: php_remi_modules
+
+- name: Link php binary
+  file: state=link src=/usr/bin/php{{ php_remi_version }} dest=/usr/bin/php force=yes
+
+- name: Link php.ini
+  file: state=link src=/opt/remi/php{{ php_remi_version }}/root/etc/php.ini dest=/etc/php.ini force=yes
+
+- name: Link php.d
+  file: state=link src=/opt/remi/php{{ php_remi_version }}/root/etc/php.d dest=/etc/php.d force=yes
+
+- name: Set the timezone
+  lineinfile:  dest=/etc/php.ini line="date.timezone = 'Asia/Tokyo'" regexp="^date.timezone = 'Asia/Tokyo'$"
+
+- name: Copy php-mbstring.ini
+  copy: src=php-mbstring.ini dest=/etc/php.d/mbstring.ini
+  notify:
+    - Restart httpd
+

@@ -1,0 +1,25 @@
+---
+- name: Upload a ssh key for repository
+  copy: src={{ gitdeploy_ssh_key_src }} dest={{ gitdeploy_ssh_key_dest }} mode=0600 owner={{ gitdeploy_user }}
+
+- name: Checkout sources from Git repository
+  git: repo={{ gitdeploy_repo }}
+       dest={{ gitdeploy_work }}
+       version={{ gitdeploy_branch }}
+       key_file={{ gitdeploy_ssh_key_dest }}
+       accept_hostkey=yes
+       force={{ gitdeploy_force | default(False) }}
+
+- name: Update dependencies (PHP composer)
+  composer: working_dir="{{ gitdeploy_work }}/{{ gitdeploy_composer_dir }}" command=install
+
+- name: Execute application deploy pre-process
+  command: "/bin/bash {{ gitdeploy_work }}/{{ gitdeploy_script_dir }}/pre_process.sh {{ gitdeploy_work }}"
+
+- name: Deploy the application
+  command: sudo -u {{ gitdeploy_user | default("root") }} rsync -a --delete --chmod=Du=rwx,Dg=srwx,Do=rx,Fug=rw,Fo=r --exclude-from={{ gitdeploy_work }}/{{ gitdeploy_script_dir }}/rsync_exclude.txt {{ gitdeploy_work }}/{{ gitdeploy_src }} {{ gitdeploy_dest }}
+
+- name: Execute application deploy post-process
+  command: "/bin/bash {{ gitdeploy_work }}/{{ gitdeploy_script_dir }}/post_process.sh {{ gitdeploy_work }} {{ gitdeploy_dest }}"
+
+

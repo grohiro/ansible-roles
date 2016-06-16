@@ -1,0 +1,6 @@
+- name: Install devel packages
+  yum: name={{item}}
+  with_items:
+    - openssl-devel
+    - pcre-devel
+

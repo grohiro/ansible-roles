@@ -1,0 +1,8 @@
+---
+- name: Deploy war
+  copy: src={{ tomcat6deploy_src }} dest={{ tomcat6deploy_dest }}
+        owner={{ tomcat6deploy_owner }} group={{ tomcat6deploy_group }}
+  notify:
+    - Restart tomcat6
+
+

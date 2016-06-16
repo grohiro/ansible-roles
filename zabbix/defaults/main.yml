@@ -1,0 +1,6 @@
+---
+# Zabbix host inventory name
+zabbix_hostname: example.com
+zabbix_server: zabbix-server.example.com
+
+

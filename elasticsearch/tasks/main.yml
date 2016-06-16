@@ -1,0 +1,18 @@
+---
+- name: Install RPM key 
+  rpm_key: state=present key=https://packages.elasticsearch.org/GPG-KEY-elasticsearch
+
+- name: Install yum repository
+  copy: src=elasticsearch.repo dest=/etc/yum.repos.d/elasticsearch.repo
+
+- name: Install Elasticsearch
+  yum: name=elasticsearch enablerepo=elasticsearch-1.4
+
+- name: Register as service
+  service: name=elasticsearch state=started enabled=yes
+
+- name: Copy Apache elasticsearch.conf
+  copy: src=elasticsearch.conf dest=/etc/httpd/conf.d/elasticsearch.conf
+  notify:
+    - Restart httpd
+

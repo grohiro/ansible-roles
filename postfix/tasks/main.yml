@@ -1,0 +1,18 @@
+---
+- name: Install Postfix
+  yum: name=postfix
+
+- name: Copy main.cf
+  template: src=main.cf dest=/etc/postfix/main.cf
+  notify:
+    - Restart Postfix
+
+- name: Copy aliases
+  template: src=aliases dest=/etc/aliases
+  notify:
+    - Exec newaliases
+
+- name: Auto start postfix
+  service: name=postfix state=running enabled=yes
+
+

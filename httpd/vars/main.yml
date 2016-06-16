@@ -1,0 +1,6 @@
+---
+httpd_conf_module_dir: /etc/httpd/conf.module.d
+httpd_conf_dir: /etc/httpd/conf.d
+httpd_user: apache
+httpd_group: apache
+

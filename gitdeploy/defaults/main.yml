@@ -1,0 +1,10 @@
+---
+gitdeploy_user: root
+gitdeploy_branch: master
+gitdeploy_work: /var/gitdeploy
+gitdeploy_src: ""
+gitdeploy_force: False
+gitdeploy_composer_dir: ""
+gitdeploy_script_dir: deploy
+
+

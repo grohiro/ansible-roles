@@ -1,0 +1,21 @@
+---
+- name: Install nginx
+  yum: name=nginx
+
+- name: Copy nginx config
+  copy: src=nginx.conf dest=/etc/nginx/nginx.conf owner=root group=root
+  notify:
+    - Restart nginx
+
+##- name: Copy conf.d
+  ##copy: src={{ item }} dest=/etc/nginx/conf.d/{{ item }} owner=root group=root
+  ##with_items:
+    ##- default.conf
+    ##- ssl.conf
+    ##- virtual.conf
+  ##notify:
+    ##- Restart nginx
+  
+- name: Auto start nginx
+  service: name=nginx state=started enabled=yes
+

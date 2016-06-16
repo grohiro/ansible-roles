@@ -1,0 +1,40 @@
+---
+- name: Create an user
+  user: name={{ user_username }}
+
+- name: Create a user ssh directory
+  file: path=~{{ user_username }}/.ssh
+        state=directory
+        mode=0700
+        owner={{ user_username }}
+        group={{ user_username }}
+
+- name: Append user groups
+  user: append=yes name={{ user_username }} groups={{ user_groups }}
+  when: user_groups is defined
+
+## ~/.ssh/config は copy モジュールで管理する.
+#- name: Add a ssh config file
+#  lineinfile: dest=~{{ user_username }}/.ssh/config
+#              regexp="^StrictHostKeyChecking"
+#              line="StrictHostKeyChecking no"
+#              mode=0600
+#              owner={{ user_username }}
+#              group={{ user_username }}
+#              create=yes
+
+- name: Create an empty authorized_keys
+  authorized_key: user={{ user_username }} key=""
+
+- name: Add an authorized_keys
+  authorized_key: user={{ user_username }} key="{{ lookup('file', user_ssh_pubkey) }}"
+  when: user_ssh_pubkey is defined
+
+- name: Add the user to /etc/sudoers
+  lineinfile: dest=/etc/sudoers
+              state=present
+              regexp="^{{ user_username }}"
+              line="{{ user_username }} ALL=(ALL) NOPASSWD:ALL"
+  when: user_sudo == True
+
+

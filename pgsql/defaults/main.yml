@@ -1,0 +1,5 @@
+---
+# Install version of PostgreSQL. [8|9.3]
+pgsql_version: 8
+pgsql_pgbigm: False
+

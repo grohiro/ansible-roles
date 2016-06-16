@@ -1,0 +1,8 @@
+---
+- name: MySQL database
+  mysql_db: name={{ mysql_dbname }} state=present encoding=utf8
+
+- name: Create webapp mysql user
+  mysql_user: name={{ mysql_user }} host={{ mysql_user_host }} password={{ mysql_password }} priv={{ mysql_dbname }}.*:ALL state=present
+
+

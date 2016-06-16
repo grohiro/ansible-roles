@@ -1,0 +1,18 @@
+---
+- name: Copy the playframework package
+  copy: src=play-{{play_version}}.zip dest=~/play-{{play_version}}.zip
+  sudo: no
+
+- name: Install Playframework
+  sudo: no
+  shell: >
+    unzip play-{{play_version}}.zip
+    creates=~/play-{{play_version}}
+
+- name: Init script
+  copy: src=files/play dest=/etc/init.d/play mode=0775 owner=root group=root
+
+- name: Start on boot
+  service: name=play state=started
+
+

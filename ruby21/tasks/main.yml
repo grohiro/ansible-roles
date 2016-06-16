@@ -1,0 +1,52 @@
+---
+- name: packages should be installed
+  yum: name={{ item }} state=present
+  with_items:
+    - gcc-c++
+    - openssl-devel
+    - zlib-devel
+    - curl-devel
+    - mysql-devel
+    - readline-devel
+    - libevent-devel
+
+- name: stat ruby
+  stat: path=/usr/local/bin/ruby
+  register: ruby_command
+
+- name: get ruby source
+  get_url: url=http://cache.ruby-lang.org/pub/ruby/2.1/ruby-{{ ruby_version }}.tar.gz dest={{ ruby_build_dir }}
+  when: ruby_command.stat.exists == False
+
+- name: expand ruby
+  command: tar zxvf {{ ruby_build_dir }}/ruby-{{ ruby_version }}.tar.gz chdir={{ ruby_build_dir }}
+  when: ruby_command.stat.exists == False
+
+- name: compile
+  command: chdir={{ ruby_build_dir }}/ruby-{{ ruby_version }} ./configure --prefix=/usr/local
+  when: ruby_command.stat.exists == False
+
+- name: ruby should be built
+  command: chdir={{ ruby_build_dir }}/ruby-{{ ruby_version }} make
+  when: ruby_command.stat.exists == False
+
+- name: ruby should be installed
+  command: chdir={{ ruby_build_dir }}/ruby-{{ ruby_version }} make install
+  when: ruby_command.stat.exists == False
+
+- name: update rubygems
+  command: /usr/local/bin/gem update --system
+  when: ruby_command.stat.exists == False
+
+- name: bundler gem should be installed
+  command: /usr/local/bin/gem install bundler
+  when: ruby_command.stat.exists == False
+
+- name: Uninstall ruby already installed
+  yum: name={{ item }} state=absent
+  with_items:
+    - ruby
+    - rubygems
+    - ruby-libs
+    - ruby-devel
+

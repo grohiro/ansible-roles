@@ -1,0 +1,5 @@
+---
+- name: Add /etc/hosts
+  lineinfile: dest=/etc/hosts line="{{ item.host }}" state={{ item.state | default("present") }}
+  with_items: addhosts_list
+

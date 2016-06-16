@@ -1,0 +1,12 @@
+---
+- file: state=directory path=/var/www/es/html recurse=yes
+
+- unarchive: src=kibana-3.1.2.zip dest=/var/www/es/html
+
+- name: Rename kibana directory
+  command: creates=/var/www/es/html/kibana mv /var/www/es/html/kibana-3.1.2 /var/www/es/html/kibana
+
+- name: Copy kibana config
+  copy: src=config.js dest=/var/www/es/html/kibana/config.js
+
+

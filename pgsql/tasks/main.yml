@@ -1,0 +1,33 @@
+---
+- include: pgsql8.yml
+  when: pgsql_version == 8
+  vars:
+    pgsql_service_name: postgresql
+
+- include: pgsql93.yml
+  when: pgsql_version == 9.3
+
+- name: Load ansible variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - ../vars/pgsql{{ pgsql_version }}.yml
+    - ../vars/pgsql.yml
+
+- include: pg_bigm.yml
+  when: pgsql_pgbigm == True
+  notify:
+    - Restart PostgreSQL
+
+- name: Check initialized
+  stat: path={{ pgsql_pgdata }}/PG_VERSION
+  register: pgversion
+
+- name: InitDB
+  command: /etc/init.d/{{ pgsql_service_name }} initdb
+  ignore_errors: True
+  when: pgversion.stat.md5 is not defined
+
+- name: Start PostgreSQL
+  service: name={{ pgsql_service_name }} state=started enabled=yes
+
+

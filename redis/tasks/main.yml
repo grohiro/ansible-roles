@@ -1,0 +1,14 @@
+---
+- name: Install Redis
+  yum: name={{item}} enablerepo=remi
+  with_items:
+    - redis
+    - php-redis
+
+- name: Copy redis.conf
+  template: src=redis.conf dest=/etc/redis.conf
+  notify:
+    - Restart redis
+
+- name: Auto start redis
+  service: name=redis state=running enabled=yes

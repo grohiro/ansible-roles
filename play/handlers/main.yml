@@ -1,0 +1,4 @@
+---
+- name: Restart play
+  action: service name=play state=restarted
+

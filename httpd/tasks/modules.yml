@@ -1,0 +1,13 @@
+---
+- name: Enable WebDAV module
+  copy: src=webdav.conf dest={{ httpd_conf_module_dir }}
+  when: httpd_module_webdav == True
+  notify:
+    - Restart httpd
+
+- name: Enable proxy module
+  copy: src=proxy.conf dest={{ httpd_conf_module_dir }}
+  when: httpd_module_proxy == True
+  notify:
+    - Restart httpd
+

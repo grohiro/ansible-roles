@@ -1,0 +1,7 @@
+---
+- name: Copy sshd_config
+  template: src=sshd_config dest=/etc/ssh/sshd_config mode=0400
+  notify:
+    - Restart sshd
+
+

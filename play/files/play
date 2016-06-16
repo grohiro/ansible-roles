@@ -1,0 +1,189 @@
+#!/bin/sh
+#
+# /etc/init.d/play_dev01_backend -- startup script for play dev01_backend engine
+#
+### BEGIN INIT INFO
+# Provides:          play_dev01_backend
+# Required-Start:    $local_fs $remote_fs $network nginx
+# Required-Stop:     $local_fs $remote_fs $network
+# Should-Start:      $named
+# Should-Stop:       $named
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start play_dev01_backend.
+# Description:       Start the play_dev01_backend engine.
+### END INIT INFO
+
+# Path to play install folder
+PLAY_HOME=/home/ec2-user/play
+PLAY=$PLAY_HOME/play
+
+# User running the Play process : when port is 80, USER=root.
+USER=ec2-user
+
+# Path to the application
+APPLICATION_PATH=$PLAY_HOME/ServiceAPI
+
+# Port
+PLAY_PORT=9000
+
+PID_FILE_PATH=${APPLICATION_PATH}/RUNNING_PID
+
+WAIT_TIME=30
+
+RETVAL=0
+
+cd ${APPLICATION_PATH}
+
+# Read application profile
+. ${APPLICATION_PATH}/etc/profile/default
+
+#export _JAVA_OPTIONS='-Xmx1024m -Xms512m'
+#export _JAVA_OPTIONS="-Xmx3072m -Xms3072m -XX:PermSize=256m -XX:MaxPermSize=512m -verbose:gc -Xloggc:${APPLICATION_PATH}/logs/gc.log -XX:+PrintGCDetails -XX:+PrintClassHistogram -XX:+PrintGCTimeStamps"
+
+start() {
+
+    if [ -f ${PID_FILE_PATH} ]
+    then
+        pid=`cat $PID_FILE_PATH`
+        if [ ! -z "$pid" ]
+        then
+            # check if the process running
+            ps -p $pid > /dev/null
+            if [ $? -ne 0 ]; then
+                # play crashed
+                rm -f ${PID_FILE_PATH}
+                pid=""
+            fi
+        fi
+    fi
+
+    if [ ! -z $pid ]
+    then
+        echo 'Play server already running.'
+        return
+    fi
+
+    echo -n "Starting Play service: "
+    su $USER -c "ulimit -u 10000 && target/start ${PLAY_OPTIONS} 1>${APPLICATION_PATH}/logs/message.log 2>${APPLICATION_PATH}/logs/error.log &"
+
+    RETVAL=$?
+
+    if [ $RETVAL -eq 0 ]; then
+        WAIT=0
+        TIMEOUT=""
+        PORT_CHECK=$(lsof -i:${PLAY_PORT})
+        while [ -z "$PORT_CHECK" ]
+        do
+            echo -n "#"
+            sleep 1
+            PORT_CHECK=$(lsof -i:${PLAY_PORT})
+            WAIT=`expr $WAIT + 1`
+            if [ $WAIT -gt $WAIT_TIME ]; then
+              TIMEOUT=true
+              break
+            fi
+        done
+
+        if [ -z "$TIMEOUT" ]
+        then
+          echo ' [OK]'
+        else
+          echo 'Failure'
+        fi
+    else
+        echo 'failure'
+    fi
+    echo
+}
+
+stop() {
+    echo -n "Shutting down Play service: "
+
+    if [ -f ${PID_FILE_PATH} ]
+    then
+        PID=`cat ${PID_FILE_PATH}`
+    else
+        echo 'Play server is not running?'
+        return
+    fi
+
+    if [ -z "$PID" ]
+    then
+      echo 'Play server is not running?'
+      rm -f $PID_FILE_PATH
+      return
+    fi
+
+    ps -p $PID > /dev/null
+    if [ $? -ne 0 ]
+    then
+        echo 'Play server is not running'
+        rm -f $PID_FILE_PATH
+        return
+    fi
+
+    ${PLAY} stop
+
+    RETVAL=$?
+
+    if [ $RETVAL -eq 0 ]; then
+
+        WAIT=0
+        TIMEOUT=""
+        PS_CHECK=$(ps --no-heading --pid ${PID})
+        while [ -n "$PS_CHECK" ]
+        do
+            echo -n "#"
+            sleep 1
+            PS_CHECK=$(ps --no-heading --pid ${PID})
+            WAIT=`expr $WAIT + 1`
+            if [ $WAIT -gt $WAIT_TIME ]; then
+              TIMEOUT=true
+              break
+            fi
+        done
+
+        if [ -z "$TIMEOUT" ]
+        then
+          echo ' [OK]'
+        else
+          echo 'Failure'
+        fi
+
+    else
+        echo -n "failure"
+    fi
+    echo
+}
+
+status() {
+    ${PLAY} status
+    RETVAL=$?
+}
+
+clean() {
+    rm -f ${APPLICATION_PATH}/RUNNING_PID
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart|reload)
+        stop
+        start
+        ;;
+    status)
+       status
+       ;;
+    clean)
+        clean
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart|status}"
+esac
+exit 0

@@ -1,0 +1,5 @@
+---
+tomcat6deploy_dest: /var/lib/tomcat6/webapps
+tomcat6deploy_owner: tomcat
+tomcat6deploy_group: tomcat
+

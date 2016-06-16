@@ -1,0 +1,3 @@
+---
+pgsql_service_name: postgresql
+pgsql_pgdata: /var/lib/pgsql/data

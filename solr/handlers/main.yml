@@ -1,0 +1,4 @@
+---
+- name: Restart solr
+  action: service name=solr state=restarted
+

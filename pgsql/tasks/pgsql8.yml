@@ -1,0 +1,7 @@
+---
+- name: Install PostgreSQL 8.x
+  yum: name={{ item }}
+  with_items:
+    - postgresql
+    - postgresql-server
+
