@@ -1,0 +1,16 @@
+---
+- hosts: all
+  sudo: yes
+  vars:
+    gitdeploy_repo: git@github.com:grohiro/******.git
+    gitdeploy_ssh_key_src: files/git_deploy_key
+    gitdeploy_ssh_key_dest: /var/www/git_deploy_key
+    gitdeploy_branch: prod
+    gitdeploy_force: true
+    gitdeploy_dest: /var/www/webapp/webapp/
+    gitdeploy_src: webapp/
+    gitdeploy_composer_dir: webapp
+    gitdeploy_script_dir: webapp/deploy
+
+  roles:
+    - role: gitdeploy
