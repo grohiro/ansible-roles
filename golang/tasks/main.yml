@@ -1,0 +1,7 @@
+---
+- name: Installs Go
+  yum: name=golang
+
+- name: Set $GOPATH
+  lineinfile: dest=~/.bash_profile state=present regexp='^export GOPATH' line="export GOPATH={{ golang_gopath }}"
+
