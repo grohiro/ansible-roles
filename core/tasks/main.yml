@@ -16,6 +16,7 @@
     - unzip
     - libselinux-python
     - tzdata
+    - jq
 
 - name: sudoers env_keep
   lineinfile: dest=/etc/sudoers
