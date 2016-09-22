@@ -1,10 +1,21 @@
 ---
-- name: Installs Go
-  yum: name=golang
+- name: Downloar golang binaries
+  get_url: url=https://storage.googleapis.com/golang/go{{ golang_version }}.linux-amd64.tar.gz dest=/tmp/
+
+- name: Unpack binaries
+  unarchive: copy=no dest=/usr/local/ src="/tmp/go{{ golang_version }}.linux-amd64.tar.gz"
+  # Hack for the bug: http://qiita.com/TakaakiOno/items/10271e56816862508fb3
+  environment:
+    LANG: C
+    LC_ALL: C
+    LC_MESSAGES: C
+
+- name: Set $GOROOT
+  lineinfile: dest=~/.bash_profile state=present regexp='^export GOROOT' line="export GOROOT=/usr/local/go"
 
 - name: Set $GOPATH
   lineinfile: dest=~/.bash_profile state=present regexp='^export GOPATH' line="export GOPATH={{ golang_gopath }}"
 
 - name: Set $PATH
-  lineinfile: dest=~/.bash_profile state=present regexp='^export PATH=\$GOPATH/bin' line="export PATH=$GOPATH/bin:$PATH"
+  lineinfile: dest=~/.bash_profile state=present regexp='^export PATH=\$GOPATH/bin' line="export PATH=$GOPATH/bin:$GOROOT/bin:$PATH"
 
