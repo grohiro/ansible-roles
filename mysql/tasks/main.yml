@@ -13,6 +13,13 @@
 - name: Install python module (needed by ansible)
   yum: name=MySQL-python
 
+- name: Install python module (needed by ansible)
+  yum: name={{ item }}
+  with_items:
+    - MySQL-python26
+    - MySQL-python27
+  when: ansible_distribution == 'Amazon' # Amazon Linux AMI
+
 - name: Load a variables file
   include_vars: "{{ item }}"
   with_first_found:
