@@ -18,6 +18,7 @@
     - libselinux-python
     - tzdata
     - gettext
+    - libcurl
 
 - name: sudoers env_keep
   lineinfile: dest=/etc/sudoers

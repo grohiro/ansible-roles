@@ -3,4 +3,5 @@
   with_items:
     - openssl-devel
     - pcre-devel
+    - libcurl-devel
 
