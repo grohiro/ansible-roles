@@ -1,0 +1,25 @@
+---
+- name: Install dependency libraries
+  yum: name={{ item }}
+  with_items:
+    - openssl
+    - openssl-devel
+    - expat
+    - expat-devel
+    - libcurl
+    - libcurl-devel
+    - gettext
+    - perl-ExtUtils-MakeMaker
+
+- name: Download Git source
+  get_url: url=https://www.kernel.org/pub/software/scm/git/git-{{ git_version }}.tar.gz dest=/tmp
+
+- name: Unpack source
+  unarchive: copy=no dest=/tmp/ src=/tmp/git-{{ git_version }}.tar.gz
+
+- name: Build Git
+  make: chdir=/tmp/git-{{ git_version }}
+
+- name: Install Git
+  make: chdir=/tmp/git-{{ git_version }} target=install
+
