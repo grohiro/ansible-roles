@@ -1,4 +1,7 @@
 ---
+- name: Unisntall yum golang
+  yum: state=absent name=golang
+
 - name: Downloar golang binaries
   get_url: url=https://storage.googleapis.com/golang/go{{ golang_version }}.linux-amd64.tar.gz dest=/tmp/
 
