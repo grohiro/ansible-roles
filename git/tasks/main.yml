@@ -15,7 +15,12 @@
   get_url: url=https://www.kernel.org/pub/software/scm/git/git-{{ git_version }}.tar.gz dest=/tmp
 
 - name: Unpack source
-  unarchive: copy=no dest=/tmp/ src=/tmp/git-{{ git_version }}.tar.gz
+  unarchive: copy=no dest=/tmp src="/tmp/git-{{ git_version }}.tar.gz"
+  # Hack for the bug: http://qiita.com/TakaakiOno/items/10271e56816862508fb3
+  environment:
+    LANG: C
+    LC_ALL: C
+    LC_MESSAGES: C
 
 - name: Build Git
   make: chdir=/tmp/git-{{ git_version }}
