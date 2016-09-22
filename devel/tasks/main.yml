@@ -1,6 +1,7 @@
 - name: Install devel packages
   yum: name={{item}}
   with_items:
+    - gcc
     - openssl-devel
     - pcre-devel
     - libcurl-devel
