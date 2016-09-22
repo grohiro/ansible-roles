@@ -23,8 +23,13 @@
     LC_MESSAGES: C
 
 - name: Build Git
-  make: chdir=/tmp/git-{{ git_version }}
+  make:
+    chdir: /tmp/git-{{ git_version }}
 
 - name: Install Git
-  make: chdir=/tmp/git-{{ git_version }} target=install
+  make:
+    chdir: /tmp/git-{{ git_version }}
+    target: install
+    params:
+      prefix: /usr/local
 
