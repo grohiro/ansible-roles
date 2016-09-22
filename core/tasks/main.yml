@@ -12,13 +12,10 @@
     - telnet
     - screen
     - lftp
-    - git
     - mail
     - unzip
     - libselinux-python
     - tzdata
-    - gettext
-    - libcurl
 
 - name: sudoers env_keep
   lineinfile: dest=/etc/sudoers
