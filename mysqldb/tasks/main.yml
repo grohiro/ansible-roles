@@ -8,7 +8,7 @@
 
 - name: Add mysql users
   mysql_user: name={{ item.user }} host={{ item.host }} password={{ item.password }} priv={{ mysqldb_dbname }}.*:ALL state=present append_privs=yes
-  with_items: mysqldb_users
+  with_items: "{{ mysqldb_users }}"
   when: mysqldb_users is defined
 
 - name: Add a crontab entry to backup database
