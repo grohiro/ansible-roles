@@ -15,10 +15,13 @@
 
 - name: Set $GOROOT
   lineinfile: dest=~/.bash_profile state=present regexp='^export GOROOT' line="export GOROOT=/usr/local/go"
+  become: no
 
 - name: Set $GOPATH
   lineinfile: dest=~/.bash_profile state=present regexp='^export GOPATH' line="export GOPATH={{ golang_gopath }}"
+  become: no
 
 - name: Set $PATH
   lineinfile: dest=~/.bash_profile state=present regexp='^export PATH=\$GOPATH/bin' line="export PATH=$GOPATH/bin:$GOROOT/bin:$PATH"
+  become: no
 
