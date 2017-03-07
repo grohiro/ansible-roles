@@ -6,7 +6,6 @@
     - telnet
     - screen
     - lftp
-    - mail
     - unzip
     - libselinux-python
     - tzdata
