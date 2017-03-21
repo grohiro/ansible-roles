@@ -1,0 +1,8 @@
+---
+- name: Install packages
+  yum: name={{ item }}
+  with_items:
+    - mariadb
+    - mariadb-server
+    - mariadb-libs
+    - mariadb-devel
