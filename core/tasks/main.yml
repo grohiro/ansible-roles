@@ -9,7 +9,6 @@
     - unzip
     - libselinux-python
     - tzdata
-    - jq
     - wget
 
 - name: sudoers env_keep
