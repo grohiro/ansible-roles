@@ -8,5 +8,5 @@ httpd_ssl_cert: /etc/httpd/conf/server.crt
 httpd_ssl_key:  /etc/httpd/conf/server.key
 httpd_ssl_inca: /etc/httpd/conf/inca.key
 
-httpd_module_webdav: False
-httpd_module_proxy: False
+httpd_module_webdav: True
+httpd_module_proxy: True
