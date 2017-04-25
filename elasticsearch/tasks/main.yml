@@ -8,8 +8,35 @@
 - name: Install Elasticsearch
   yum: name=elasticsearch enablerepo=elasticsearch
 
+- name: Increase max number of threads for elasticsearch
+  lineinfile:
+    line: 'elasticsearch          soft    nproc     2048'
+    dest: /etc/security/limits.d/elasticsearch.conf
+    create: yes
+
 - name: Register as service
   service: name=elasticsearch state=started enabled=yes
+
+- name: Copy Elasticsearch configs
+  template: src={{ item }} dest=/etc/elasticsearch/
+  with_items:
+    - elasticsearch.yml
+  notify:
+    - Restart elasticsearch
+
+- name: Copy Elasticsearch configs
+  copy: src={{ item }} dest=/etc/elasticsearch/
+  with_items:
+    - jvm.options
+  notify:
+    - Restart elasticsearch
+
+- name: Copy Elasticsearch sysconfig
+  copy: src=sysconfig/{{ item }} dest=/etc/sysconfig/{{ item }}
+  with_items:
+    - elasticsearch
+  notify:
+    - Restart elasticsearch
 
 - name: Copy Apache elasticsearch.conf
   copy: src=elasticsearch.conf dest=/etc/httpd/conf.d/elasticsearch.conf
