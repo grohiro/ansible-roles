@@ -1,5 +1,6 @@
 ---
 dependencies:
-  - { role: httpd }
-  - { role: openjdk }
+  - role: httpd
+  - role: openjdk
+    openjdk_version: 1.8.0
 

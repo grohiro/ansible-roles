@@ -6,7 +6,7 @@
   copy: src=elasticsearch.repo dest=/etc/yum.repos.d/elasticsearch.repo
 
 - name: Install Elasticsearch
-  yum: name=elasticsearch enablerepo=elasticsearch-1.4
+  yum: name=elasticsearch enablerepo=elasticsearch
 
 - name: Register as service
   service: name=elasticsearch state=started enabled=yes
