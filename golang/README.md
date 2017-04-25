@@ -1,10 +1,15 @@
 # Go
 
+Install Go language binaries.
+
 ## Vars
 
+- `golang_version`: The version of Go
 - `golang_gopath`: $GOPATH
 
-```yaml
-roles:
-  - golang
+# Usage
+
+```
+- role: golang
+  golang_gopath: ~/go/
 ```
