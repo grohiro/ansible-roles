@@ -14,7 +14,7 @@
 
 - name: Install PHP core
   yum : name={{ item }} enablerepo=remi
-  with_items: php_remi_modules
+  with_items: "{{ php_remi_modules }}"
 
 - name: Link php binary
   file: state=link src=/usr/bin/php{{ php_remi_version }} dest=/usr/bin/php force=yes
