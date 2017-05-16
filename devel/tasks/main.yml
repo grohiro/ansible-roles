@@ -5,4 +5,5 @@
     - openssl-devel
     - pcre-devel
     - libcurl-devel
+    - sqlite-devel
 
