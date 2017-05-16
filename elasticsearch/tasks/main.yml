@@ -37,9 +37,3 @@
     - elasticsearch
   notify:
     - Restart elasticsearch
-
-- name: Copy Apache elasticsearch.conf
-  copy: src=elasticsearch.conf dest=/etc/httpd/conf.d/elasticsearch.conf
-  notify:
-    - Restart httpd
-
