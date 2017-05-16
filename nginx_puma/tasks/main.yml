@@ -1,0 +1,4 @@
+---
+- name: Copy a config for nginx
+  template: src=puma.conf dest=/etc/nginx/conf.d/
+
