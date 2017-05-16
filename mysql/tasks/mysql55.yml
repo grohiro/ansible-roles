@@ -1,0 +1,8 @@
+---
+- name: Install MySQL-5.5
+  yum: name={{ item }}
+  with_items:
+    - mysql55-mysql
+    - mysql55-mysql-server
+    - mysql55-mysql-libs
+    - mysql55-mysql-devel

@@ -5,7 +5,7 @@ MySQL のインストール。
 ## Vars
 
 `mysql_bind_address` - bind-address (Optional: 127.0.0.1)
-`mysql_version` - インストールするMySQLのバージョン (5.6|未指定)
+`mysql_version` - インストールするMySQLのバージョン (5.5|5.6|未指定)
 
 ### /etc/my.conf
 

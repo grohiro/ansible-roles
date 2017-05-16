@@ -3,6 +3,10 @@
   include: mysql.yml
   when: mysql_version is not defined
 
+- name: Install MySQL 5.5
+  include: mysql55.yml
+  when: mysql_version is defined and mysql_version == 5.5
+
 - name: Install MySQL 5.6
   include: mysql56.yml
   when: mysql_version is defined and mysql_version == 5.6
