@@ -7,6 +7,8 @@
   notify:
     - Restart nginx
 
+- name: Make a log directory
+  file: state=directory path=/var/log/nginx owner=nginx group=nginx mode=0775
 ##- name: Copy conf.d
   ##copy: src={{ item }} dest=/etc/nginx/conf.d/{{ item }} owner=root group=root
   ##with_items:
