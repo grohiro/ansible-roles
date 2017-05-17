@@ -1,0 +1,4 @@
+---
+- name: Restart mysqld
+  action: service name=mysqld state=restarted
+

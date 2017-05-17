@@ -1,0 +1,40 @@
+---
+- name: Install a yum repository for MySQL community edition
+  yum: name={{ item }}
+  with_items:
+    - https://dev.mysql.com/get/mysql57-community-release-el6-11.noarch.rpm
+
+- name: Install the MySQL 5.6 packages
+  yum: name={{ item }} state=present enablerepo=mysql56-community disablerepo=mysql57-community
+  with_items:
+    - mysql-community-server
+    - mysql-community-libs
+    - mysql-community-common
+    - mysql-community-devel
+    - mysql-community-client
+
+- name: Install a python module (needed by ansible)
+  yum: name=MySQL-python
+
+- name: Install a python module (needed by ansible)
+  yum: name={{ item }}
+  with_items:
+    - MySQL-python26
+    - MySQL-python27
+  when: ansible_distribution == 'Amazon' # Amazon Linux AMI
+
+- name: Make a log directory
+  file: state=directory path={{ mysql56_community_log_dir }} owner=mysql group=mysql mode=0775
+
+- name: Copy my.conf
+  template: src=my.cnf dest=/etc/my.cnf owner=root group=root mode=0644
+  notify:
+    - Restart mysqld
+
+- name: logrotation
+  copy: src={{ item }} dest=/etc/logrotate.d/{{ item }} owner=root group=root mode=0644
+  with_items:
+    - mysql_log
+
+- name: Auto start MySQL
+  service: name=mysqld state=started enabled=yes
