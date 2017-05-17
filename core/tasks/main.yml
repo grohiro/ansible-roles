@@ -11,6 +11,9 @@
     - tzdata
     - wget
 
+- name: Disable SELinux
+  selinux: state=disabled
+
 - name: sudoers env_keep
   lineinfile: dest=/etc/sudoers
               regexp="Defaults\s*env_keep"
