@@ -21,15 +21,15 @@
   template: src={{ item }} dest=/etc/elasticsearch/
   with_items:
     - elasticsearch.yml
-  notify:
-    - Restart elasticsearch
-
-- name: Copy Elasticsearch configs
-  copy: src={{ item }} dest=/etc/elasticsearch/
-  with_items:
     - jvm.options
   notify:
     - Restart elasticsearch
+
+#- name: Copy Elasticsearch configs
+#copy: src={{ item }} dest=/etc/elasticsearch/
+#with_items:
+#notify:
+#- Restart elasticsearch
 
 - name: Copy Elasticsearch sysconfig
   copy: src=sysconfig/{{ item }} dest=/etc/sysconfig/{{ item }}

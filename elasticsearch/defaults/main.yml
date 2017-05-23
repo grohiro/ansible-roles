@@ -1,2 +1,6 @@
 ---
 elasticsearch_bind_address: 0.0.0.0
+
+# jvm.potions
+elasticsearch_jvm_ms: 512m
+elasticsearch_jvm_mx: 512m
