@@ -22,7 +22,7 @@ Vagrant上のMySQLサンプル。
 
 ```
 vars:
-  mysql_bind_address: 0.0.0.0
+  mysql56_community_bind_address: 0.0.0.0
 roles:
   - role: mysql
 ```
