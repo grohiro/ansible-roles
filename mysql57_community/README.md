@@ -4,6 +4,11 @@ Install MySQL 5.7 Community Edition from the MySQL yum repository.
 
 [MySQL Yum repository](https://dev.mysql.com/downloads/repo/yum/)
 
+**Notice**
+
+- The `password_plugin` is uninstalled.
+- The root password is set to be empty.
+
 ## Var
 
 - `mysql57_community_log_dir` - Path of MySQL log directory [/var/log/mysql]
