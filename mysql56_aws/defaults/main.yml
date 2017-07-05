@@ -1,0 +1,4 @@
+---
+mysql56_aws_log_dir: /var/log/mysql
+mysql56_aws_bind_address: 127.0.0.1
+

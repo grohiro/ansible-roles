@@ -1,0 +1,33 @@
+{{ mysql56_aws_log_dir }}/query.log {
+  compress
+  daily
+  missingok
+  create 644 mysql mysql
+  rotate 10
+  sharedscripts
+  postrotate
+     # just if mysqld is really running
+     if test -x /usr/bin/mysqladmin && \
+        /usr/bin/mysqladmin ping &>/dev/null
+     then
+        /usr/bin/mysqladmin flush-logs
+     fi
+  endscript
+}
+
+{{ mysql56_aws_log_dir }}/error.log {{ mysql56_aws_log_dir }}/mysqld.log {
+  compress
+  weekly
+  missingok
+  create 644 mysql mysql
+  rotate 10
+  sharedscripts
+  postrotate
+     # just if mysqld is really running
+     if test -x /usr/bin/mysqladmin && \
+        /usr/bin/mysqladmin ping &>/dev/null
+     then
+        /usr/bin/mysqladmin flush-logs
+     fi
+  endscript
+}
