@@ -3,7 +3,6 @@
   yum: name={{item}} enablerepo=remi
   with_items:
     - redis
-    - php-redis
 
 - name: Copy redis.conf
   template: src=redis.conf dest=/etc/redis.conf
