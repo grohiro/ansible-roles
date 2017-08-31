@@ -14,7 +14,7 @@ Install MySQL 5.6 Community Edition from the MySQL yum repository.
 ```
 roles:
   - role: mysql56_community
-    mysql56_bind_address: 0.0.0.0
+    mysql56_community_bind_address: 0.0.0.0
     
 ```
 
