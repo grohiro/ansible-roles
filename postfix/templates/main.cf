@@ -72,7 +72,7 @@ mail_owner = postfix
 # from gethostname(). $myhostname is used as a default value for many
 # other configuration parameters.
 #
-myhostname = office.growk.jp
+myhostname = {{ postfix_myhostname }}
 #myhostname = virtual.domain.tld
 
 # The mydomain parameter specifies the local internet domain name.
