@@ -2,3 +2,5 @@
 - name: Install PHP 7.0
   yum: name=php70
 
+- name: Create an alias
+  file: src=/usr/bin/php70 dest=/usr/bin/php state=link
