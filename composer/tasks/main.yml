@@ -1,7 +1,6 @@
 ---
-- name: Install composer
-  shell: >
-    curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
-    chdir=/usr/local/bin
-    creates=/usr/local/bin/composer
+- name: Download composer
+  get_url: url=https://getcomposer.org/installer dest=/tmp/composer-installer
 
+- name: Install composer
+  shell: php /tmp/composer-installer && mv composer.phar /usr/local/bin/composer creates=/usr/local/bin/composer
