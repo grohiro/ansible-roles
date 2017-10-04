@@ -1,0 +1,42 @@
+---
+- name: Install packages needed by Ruby
+  yum: name={{ item }}
+  with_items:
+    - git
+    - readline-devel
+
+- name: Clone rbenv from Github
+  git: repo=https://github.com/rbenv/rbenv.git dest=~/.rbenv
+  sudo: no
+
+- name: Configure rbenv
+  command: src/configure && make -C src chdir=~/.rbenv
+  sudo: no
+  ignore_errors: True
+
+- lineinfile:
+    line: export PATH="$HOME/.rbenv/bin:$PATH"
+    path: ~/.bash_profile
+  sudo: no
+
+- lineinfile:
+    line: eval "$(rbenv init -)"
+    path: ~/.bash_profile
+  sudo: no
+
+- name: Make plugin directory for rbenv
+  file: state=directory path=~/.rbenv/plugins
+  sudo: no
+
+- name: Clone ruby-build from Github
+  git: repo=https://github.com/rbenv/ruby-build.git dest=~/.rbenv/plugins/ruby-build
+  sudo: no
+
+- name: Install Ruby with rbenv
+  command: ~/.rbenv/bin/rbenv install -s {{ ruby_version }}
+  sudo: no
+
+- name: Set default Ruby version
+  command: ~/.rbenv/bin/rbenv global {{ ruby_version }}
+  sudo: no
+
