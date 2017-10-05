@@ -13,6 +13,7 @@ Install MySQL 5.7 Community Edition from the MySQL yum repository.
 
 - `mysql57_community_log_dir` - Path of MySQL log directory [/var/log/mysql]
 - `mysql57_community_bind_address` - IP address to bind MySQL [127.0.0.1]
+- `mysql57_community_port` - Port
 
 ## サンプル
 

@@ -1,4 +1,5 @@
 ---
 mysql57_community_log_dir: /var/log/mysql/
 mysql57_community_bind_address: 127.0.0.1
+mysql57_community_port: 3306
 
