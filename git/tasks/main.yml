@@ -11,25 +11,24 @@
     - gettext
     - perl-ExtUtils-MakeMaker
 
-- name: Download Git source
-  get_url: url=https://www.kernel.org/pub/software/scm/git/git-{{ git_version }}.tar.gz dest=/tmp
+- name: Install Git (Git is needed to install Git...)
+  yum: name=git
 
-- name: Unpack source
-  unarchive: copy=no dest=/tmp src="/tmp/git-{{ git_version }}.tar.gz"
-  # Hack for the bug: http://qiita.com/TakaakiOno/items/10271e56816862508fb3
-  environment:
-    LANG: C
-    LC_ALL: C
-    LC_MESSAGES: C
+- name: Clone Git repository
+  git:
+    repo: 'https://github.com/git/git'
+    dest: /usr/local/src/git
+    version: "{{ git_version }}"
 
-- name: Build Git
+- name: make
   make:
-    chdir: /tmp/git-{{ git_version }}
-
-- name: Install Git
-  make:
-    chdir: /tmp/git-{{ git_version }}
-    target: install
+    chdir: /usr/local/src/git
     params:
       prefix: /usr/local
 
+- name: make install
+  make:
+    chdir: /usr/local/src/git
+    target: install
+    params:
+      prefix: /usr/local
