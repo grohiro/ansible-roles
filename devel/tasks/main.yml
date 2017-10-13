@@ -7,4 +7,5 @@
     - pcre-devel
     - libcurl-devel
     - sqlite-devel
+    - ctags
 
