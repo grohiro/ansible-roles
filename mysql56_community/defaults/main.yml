@@ -1,3 +1,4 @@
 ---
 mysql56_community_log_dir: /var/log/mysql/
+mysql56_community_port: 3306
 
