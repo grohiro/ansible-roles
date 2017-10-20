@@ -40,3 +40,5 @@
   command: ~/.rbenv/bin/rbenv global {{ ruby_version }}
   sudo: no
 
+- name: Install bundler
+  gem: name=bundler
