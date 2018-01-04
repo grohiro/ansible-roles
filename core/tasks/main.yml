@@ -10,6 +10,7 @@
     - libselinux-python
     - tzdata
     - wget
+    - tmux
 
 - name: Disable SELinux
   selinux: state=disabled
