@@ -37,9 +37,5 @@
               create=yes
               mode=0600
 
-- name: Copy timezone
-  file: src=/usr/share/zoneinfo/Asia/Tokyo dest=/etc/localtime force=true state=link
-
 - name: Change timezone
-  lineinfile: dest=/etc/sysconfig/clock regexp="^ZONE=" line="ZONE=\"Asia/Tokyo\""
-
+  command: timedatectl set-timezone Asia/Tokyo
