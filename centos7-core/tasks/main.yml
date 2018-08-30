@@ -8,6 +8,7 @@
     - lftp
     - unzip
     - curl
+    - redhat-lsb-core
 
 - name: sudoers env_keep
   lineinfile: dest=/etc/sudoers
