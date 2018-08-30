@@ -15,5 +15,5 @@ Install rbenv and Ruby for `ansible_ssh_user`
     rubies:
       - version: 2.2.7
   rbenv_users:
-    - "{{ ansible_ssh_user }}"
+    - vagrant
 ```
